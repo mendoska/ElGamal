@@ -20,24 +20,91 @@ string decimalToBinary(int dec){
         binary =(dec % 2 == 0 ? "0":"1") +binary;
         dec = dec/2;
     }
-    while(binary.length()<4){
-        binary = "0" + binary;
-    }
+//    while(binary.length()<4){
+//        binary = "0" + binary;
+//    }
     return binary;
+}
+
+//needed for indexing in algorithm for SSM
+void reverseStr(string& str)
+{
+    int n = str.length();
+
+    // Swap character starting from two
+    // corners
+    for (int i = 0; i < n / 2; i++){
+        swap(str[i], str[n - i - 1]);
+    }
+}
+
+
+int randNumGen(int lower_bound, int upper_bound){
+      // create a random number generator using the Mersenne Twister algorithm
+       std::mt19937 rng(std::random_device{}());
+
+       // create a uniform integer distribution object with the given bounds
+       std::uniform_int_distribution<int> dist(lower_bound, upper_bound);
+
+       // generate a random number within the given bounds
+       return dist(rng);
+}
+
+
+
+//a - base k - power n- for mod
+//output: a^k mod n
+
+int SSM(int a, int k, int n){
+
+    int b = 0;
+    int t = 4;  //using 4 as t for the sake of implementation
+//#1
+    if (k == 0) {
+        b=1;
+        return b;
+    }
+
+//converting k to binary
+    string binK = decimalToBinary(k);
+    reverseStr(binK);
+
+//#2
+    int capA = a;
+//#3
+//issue found -> need to go to the end of the array due to algorithm having k_0 be the last digit
+//solved by reversing string
+
+    if (binK[0] == '1'){
+        b = a;
+    }
+//#4 for loop
+    for (int i = 1; i<=t; i++){
+        //4.1
+        capA = (capA * capA);
+        //4.2
+        if (binK[i] == '1'){
+            b = (capA *b);
+        }
+    }
+//#5
+    return b%n;
 }
 
 
 
 //Miller_Rabin Probabilistic Primality Test
-int millerRabin(int n, int t){
+string millerRabin(int n, int t){
+    string composite = "composite";
+    string prime = "prime";
 
     //instances that are always prime numbers
     if (n == 1 || n == 2 || n == 3){
-      return true;
+      return prime;
     }
 //#1
 //note: maybe store n-1 & n-2 in their own variable to keep n
-   //temp variable to keep original n
+//temp variable to keep original n
 
     int nMinus1 = n-1;
     //exponent of 2
@@ -62,58 +129,32 @@ int millerRabin(int n, int t){
   //returning
   //for loop
   for (int i =1; i <= t; i++){
-    //2.1
-    //choose a random int a,
-      // Create a random number generator using the Mersenne Twister algorithm
-       std::mt19937 rng(std::random_device{}());
-   // 2<=a<=n-2
-       int lower_bound = 2;
-       int upper_bound = nMinus2 ;
-
-       // Create a uniform integer distribution object with the given bounds
-       std::uniform_int_distribution<int> dist(lower_bound, upper_bound);
-
-       // Generate a random number within the given bounds
-       int a = dist(rng);
-
-       return 0;
-
-  }
-
-    return n;
-}
-
-
-int SSM(int a, int k, int n){
-    int b = 0;
-    //using 4 as t for the sake of implementation
-    int t = 4;
-//#1
-    if (k == 0) {
-        b=1;
-        return b;
-    }
-
-//converting k to binary
-    string binK = decimalToBinary(k);
-//#2
-    int capA = a;
-//#3
-    if (binK[0] == '1'){
-        b = a;
-    }
-//#4 for loop
-    for (int i = 1; i<=t; i++){
-        //4.1
-        capA = ((capA * capA) % n);
-        //4.2
-        if (binK[i] == '1'){
-            b = ((capA *b)%n);
+    int j;
+    //2.1 2<=a<=n-2
+       int a = randNumGen(2, nMinus2);
+    //2.2 y = a^r (mod n) using SSM
+       int y = SSM(a,r,n);
+    //2.3
+       if (y != 1 && y != nMinus1){
+          j =1;
+       }
+       while (j <= (s-1) && (y != nMinus1)){
+              y = ((y*y)%n);
+              if (y ==1){
+                  return composite;
+              }
+              j++;
         }
-    }
-//#5
-    return b;
+
+       if(y!= n-1){
+           return composite;
+       }
+  }
+    //#3
+    return prime;
 }
+
+
 
 
 int main()
@@ -130,9 +171,13 @@ int main()
 //    cin >>keySize;
 
 
+     int a;
+     a = SSM(13,15,13);
+     int b = pow(13,15);
+     b = b%13;
 
-     cout<<"Break";
-
+     cout<<"The result of a: "<<a<<endl;
+     cout<<"The result of b: "<<b<<endl;
 
     return 0;
 }
