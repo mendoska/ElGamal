@@ -81,14 +81,14 @@ int SSM(int a, int k, int n){
 //#4 for loop
     for (int i = 1; i<=t; i++){
         //4.1
-        capA = (capA * capA);
+        capA = (capA * capA)%n;
         //4.2
         if (binK[i] == '1'){
-            b = (capA *b);
+            b = (capA *b)%n;
         }
     }
 //#5
-    return b%n;
+    return b;
 }
 
 
@@ -122,9 +122,10 @@ string millerRabin(int n, int t){
     //when is n no longer divisible by 2 that means it will be r
     else {
         r= nMinus1;
+        break;
     }
   }
-
+  nMinus1 = n-1;
   int nMinus2 = n -2;
   //returning
   //for loop
@@ -137,17 +138,16 @@ string millerRabin(int n, int t){
     //2.3
        if (y != 1 && y != nMinus1){
           j =1;
-       }
-       while (j <= (s-1) && (y != nMinus1)){
-              y = ((y*y)%n);
-              if (y ==1){
-                  return composite;
-              }
-              j++;
-        }
-
-       if(y!= n-1){
-           return composite;
+           while (j <= s-1 && y != nMinus1){
+                  y = ((y*y)%n);
+                  if (y ==1){
+                      return composite;
+                  }
+                  j++;
+            }
+           if(y!= n-1){
+               return composite;
+           }
        }
   }
     //#3
@@ -171,13 +171,9 @@ int main()
 //    cin >>keySize;
 
 
-     int a;
-     a = SSM(13,15,13);
-     int b = pow(13,15);
-     b = b%13;
+    string str = millerRabin(79,4);
+    cout << str<<endl;
 
-     cout<<"The result of a: "<<a<<endl;
-     cout<<"The result of b: "<<b<<endl;
 
     return 0;
 }
