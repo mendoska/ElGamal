@@ -213,9 +213,37 @@ void elGamal (){
 
 
     //1d
-    //computer
+    //compute gamma = alpa^k mod p
+    int gamma = SSM(alpha,k,p);
+
+    //compute delta = m * (alpha^a)^k mod p
+
+    int delta = m *(SSM(alphaPowA,k,p)%p);
+
+    //send ciphertext
+
+    cout<<"The ciphertext is: "<<gamma<< " "<<delta;
+
+  //*****************
+ //start decryption
+ //*****************
 
 
+    //2a use the private-key a to computer gamma ^ p-1-a mod p
+
+    //declare p-1-a
+
+    int pMinus1A = ((p-1) -a);
+
+    int gammaPMinus1A = SSM(gamma,pMinus1A,p);
+
+    //2b recovering "m" private key gamma^-a * delta mod p
+
+    //getting message again
+    int decMessage = (gammaPMinus1A *delta)%p;
+
+    cout<<"Your original message"<<m<<endl;
+    cout<<"Decrypted message (original message)"<<decMessage;
 
 }
 
