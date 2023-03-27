@@ -12,6 +12,8 @@ ASSIGNMENT #3 EL GAMAL ALGORITHM
 #include <bitset>
 #include <random>
 #include <vector>
+
+
 using namespace std;
 
 string decimalToBinary(int dec){
@@ -92,7 +94,7 @@ int SSM(int a, int k, int n){
 }
 
 
-
+//issue with  79
 //Miller_Rabin Probabilistic Primality Test
 string millerRabin(int n, int t){
     string composite = "composite";
@@ -145,13 +147,76 @@ string millerRabin(int n, int t){
                   }
                   j++;
             }
-           if(y!= n-1){
+           if(y!= nMinus1){
                return composite;
            }
        }
   }
     //#3
     return prime;
+}
+
+
+
+//implementation of elGamal
+void elGamal (){
+
+
+   //PRIVATE KEY
+   // 1. GENERATE A LARGE RANDOM PRIME "p"
+
+   //note: you will put place holder values for random num gen
+   // but you will change these numbers based on bit size from user
+
+   string test = "";
+   int p;
+
+   //create random number until prime is found
+
+   while(test != "prime"){
+    p = randNumGen(0,1000);
+    test = millerRabin(p,4);
+    }
+
+   //for now i will be providing a generator variable of 2
+   //link either crypto ++ or hardcoded function to find generator alpha
+   int alpha =2;
+
+   //1<=a<=p-2
+   int a = randNumGen(1,p-2);
+
+   //alpha ^a mod p using SSM
+
+   int alphaPowA = SSM(alpha,a,p);
+
+ //*****************
+ //start encryption
+ //*****************
+
+    //1a
+    //public keys
+    cout<<"Your public keys are as follows: " << "p: "<< p << "alpha: " <<alpha
+    << "alpha ^a mod p:" <<alphaPowA<<endl;
+    cout<< "Private key (a): "<< a;
+
+    //1b
+    //represent message "m" as an integer
+
+    //for implementation v.1 I will set a value for message
+    //later i will create method to get integer value
+
+    int m =235;
+
+    //1c
+    //select random integer
+    int k = randNumGen (1,p-2);
+
+
+    //1d
+    //computer
+
+
+
 }
 
 
@@ -171,8 +236,8 @@ int main()
 //    cin >>keySize;
 
 
-    string str = millerRabin(79,4);
-    cout << str<<endl;
+    string str = millerRabin(7919,4);
+   cout << str<<endl;
 
 
     return 0;
