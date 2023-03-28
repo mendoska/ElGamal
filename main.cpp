@@ -16,7 +16,7 @@ ASSIGNMENT #3 EL GAMAL ALGORITHM
 
 using namespace std;
 
-string decimalToBinary(int dec){
+string decimalToBinary(long long dec){
    string binary;
     while (dec!=0 ){
         binary =(dec % 2 == 0 ? "0":"1") +binary;
@@ -37,18 +37,18 @@ string generateBinary (int numBits){
 string intToBinary(int n, int numBits) {
     string binaryStr;
     for (int i = numBits - 1; i >= 0; i--) {
-        //<< left bit shift 1<<i, shifts binary representation of 1 to the left by i positions
+        ///<< left bit shift 1<<i, shifts binary representation of 1 to the left by i positions
         binaryStr += ((n & (1 << i)) ? '1' : '0');
     }
     return binaryStr;
 }
 
-int binaryToDecimal(string binary){
-    int decimal = 0;
-    int counter = 0;
-    int size = binary.length();
+long long binaryToDecimal(string binary){
+    long long decimal = 0;
+    long long counter = 0;
+    long long size = binary.length();
 
-    for (int i = size-1; i>=0; i--){
+    for (long long i = size-1; i>=0; i--){
         if (binary[i] == '1'){
             decimal += pow(2,counter);
         }
@@ -71,12 +71,12 @@ void reverseStr(string& str)
 }
 
 
-int randNumGen(int lower_bound, int upper_bound){
+long long randNumGen(long long lower_bound, long long upper_bound){
       // create a random number generator using the Mersenne Twister algorithm
        std::mt19937 rng(std::random_device{}());
 
        // create a uniform integer distribution object with the given bounds
-       std::uniform_int_distribution<int> dist(lower_bound, upper_bound);
+       std::uniform_int_distribution<long long> dist(lower_bound, upper_bound);
 
        // generate a random number within the given bounds
        return dist(rng);
@@ -88,9 +88,9 @@ int randNumGen(int lower_bound, int upper_bound){
 //a - base k - power n- for mod
 //output: a^k mod n
 
-int SSM(int a, int k, int n){
+long long SSM(long long a, long long k, long long n){
 
-    int b = 0;
+    long long b = 0;
     int t = 4;  //using 4 as t for the sake of implementation
 //#1
     if (k == 0) {
@@ -103,7 +103,7 @@ int SSM(int a, int k, int n){
     reverseStr(binK);
 
 //#2
-    int capA = a;
+    long long capA = a;
 //#3
 //issue found -> need to go to the end of the array due to algorithm having k_0 be the last digit
 //solved by reversing string
@@ -127,7 +127,7 @@ int SSM(int a, int k, int n){
 
 //issue with  #79 and a few other numbers
 //Miller_Rabin Probabilistic Primality Test
-string millerRabin(int n, int t){
+string millerRabin(long long n, int t){
     string composite = "composite";
     string prime = "prime";
 
@@ -139,11 +139,11 @@ string millerRabin(int n, int t){
 //note: maybe store n-1 & n-2 in their own variable to keep n
 //temp variable to keep original n
 
-    int nMinus1 = n-1;
+    long long nMinus1 = n-1;
     //exponent of 2
-   int s = 0;
+    long long s = 0;
    //odd number multiplied by 2^s
-   int r = 0;
+    long long r = 0;
 
   while (nMinus1 != 0){
    //if n is divisible by 2
@@ -159,15 +159,15 @@ string millerRabin(int n, int t){
     }
   }
   nMinus1 = n-1;
-  int nMinus2 = n -2;
+long long nMinus2 = n -2;
   //returning
   //for loop
   for (int i =1; i <= t; i++){
     int j;
     //2.1 2<=a<=n-2
-       int a = randNumGen(2, nMinus2);
+      long long a = randNumGen(2, nMinus2);
     //2.2 y = a^r (mod n) using SSM
-       int y = SSM(a,r,n);
+      long long y = SSM(a,r,n);
     //2.3
        if (y != 1 && y != nMinus1){
           j =1;
@@ -204,7 +204,7 @@ void elGamal (int bits, string plainText){
 
    //declaring variables
    string test = "";
-   int p;
+    long long p;
    string binP;
 
   while(test != "prime"){
@@ -222,14 +222,14 @@ void elGamal (int bits, string plainText){
 
    //for now i will be providing a generator variable of 2
    //link either crypto ++ or hardcoded function to find generator alpha
-   int alpha =2;
+    long long alpha =2;
 
    //1<=a<=p-2
-   int a = randNumGen(1,p-2);
+    long long a = randNumGen(1,p-2);
 
    //alpha ^a mod p using SSM
 
-   int alphaPowA = SSM(alpha,a,p);
+    long long alphaPowA = SSM(alpha,a,p);
 
  //*****************
  //start encryption
@@ -237,8 +237,8 @@ void elGamal (int bits, string plainText){
 
     //1a
     //public keys
-    cout<<"Your public keys are as follows: " << "p: "<< p << "alpha: " <<alpha
-    << "alpha ^a mod p:" <<alphaPowA<<endl;
+    cout<<"Your public keys are as follows: " << "p: "<< p << " alpha: " <<alpha
+    << " alpha ^a mod p:" <<alphaPowA<<endl;
 
     cout<< "Private key (a): "<< a<<endl;
 
@@ -247,23 +247,23 @@ void elGamal (int bits, string plainText){
 
     //create an m variable that will represent the message in an integer in the range of {0,p-1}
 
-    int m = randNumGen(0, p-1);
+    long long m = randNumGen(0, p-1);
     cout<< "Your plaintext " <<plainText<<" , will be represented by this m = "<<m<<endl;
 
 
 
     //1c
     //select random integer
-    int k = randNumGen (1,p-2);
+    long long k = randNumGen (1,p-2);
 
 
     //1d
     //compute gamma = alpa^k mod p
-    int gamma = SSM(alpha,k,p);
+    long long gamma = SSM(alpha,k,p);
 
     //compute delta = m * (alpha^a)^k mod p
 
-    int delta = m *(SSM(alphaPowA,k,p)%p);
+    long long delta = m *(SSM(alphaPowA,k,p)%p);
 
     //send ciphertext
 
@@ -278,17 +278,17 @@ void elGamal (int bits, string plainText){
 
     //declare p-1-a
 
-    int pMinus1A = ((p-1) -a);
+    long long pMinus1A = ((p-1) -a);
 
-    int gammaPMinus1A = SSM(gamma,pMinus1A,p);
+    long long gammaPMinus1A = SSM(gamma,pMinus1A,p);
 
     //2b recovering "m" private key gamma^-a * delta mod p
 
     //getting message again
-    int decMessage = (gammaPMinus1A *delta)%p;
+    long long decMessage = (gammaPMinus1A *delta)%p;
 
     cout<<"Your original message"<<m<<endl;
-    cout<<"Decrypted message (original message)"<<decMessage<<endl;
+    cout<<"Decrypted message (original message): "<<decMessage<<endl;
 
 }
 
@@ -303,7 +303,7 @@ int main()
     cin >>keySize;
 
     cout << "\nPlease enter your plaintext message: ";
-    getline(cin,plainText);
+    cin>>plainText;
 
 
     elGamal(keySize,plainText);
