@@ -25,7 +25,14 @@ string decimalToBinary(int dec){
     return binary;
 }
 
+string generateBinary (int numBits){
+    string binaryStr;
 
+    for (int i = 0; i<numBits; i++){
+        binaryStr += ((rand()%2 == 0 ) ? '0':'1');
+    }
+    return binaryStr;
+}
 //makes binary string based on number of bits
 string intToBinary(int n, int numBits) {
     string binaryStr;
@@ -74,6 +81,7 @@ int randNumGen(int lower_bound, int upper_bound){
        // generate a random number within the given bounds
        return dist(rng);
 }
+
 
 
 
@@ -191,18 +199,26 @@ void elGamal (int bits, string plainText){
    //note: you will put place holder values for random num gen
    // but you will change these numbers based on bit size from user
 
-   string test = "";
-   int p;
 
    //create random number until prime is found
 
-   while(test != "prime"){
-    p = randNumGen(0,1000);
-    test = millerRabin(p,4);
-    }
+   //declaring variables
+   string test = "";
+   int p;
+   string binP;
 
+  while(test != "prime"){
+   //generates binary from bits size input
+    binP= generateBinary(bits);
 
+   //turns binary to decimal
+   p = binaryToDecimal(binP);
 
+   //test if prime is found
+   test = millerRabin(p,4);
+  }
+
+    cout <<"test";
 
    //for now i will be providing a generator variable of 2
    //link either crypto ++ or hardcoded function to find generator alpha
@@ -277,8 +293,6 @@ void elGamal (int bits, string plainText){
 }
 
 
-
-
 int main()
 {
     int keySize = 0;
@@ -291,24 +305,28 @@ int main()
     cout << "\nPlease enter your plaintext message: ";
     getline(cin,plainText);
 
-    //converting string to int
-   // int plainTextInt = stoi(plainText);
 
     elGamal(keySize,plainText);
-
-
 
     return 0;
 }
 
 
+
+
+/*
+SCRATCH CODE / TESTING LINES
+
+*/
+
+
+
+
+//converting string to int
+// int plainTextInt = stoi(plainText);
+
 //    string str = millerRabin(7919,4);
 //   cout << str<<endl;
-
-
-
-
-
 
 
 
