@@ -9,9 +9,8 @@ ASSIGNMENT #3 EL GAMAL ALGORITHM
 
 #include <iostream>
 #include <string>
-#include <bitset>
 #include <random>
-#include <vector>
+
 
 
 using namespace std;
@@ -85,16 +84,17 @@ long long randNumGen(long long lower_bound, long long upper_bound){
 
 
 
-//a - base k - power n- for mod
+//a - base
+//k - power
+//n- for mod
 //output: a^k mod n
 
 long long SSM(long long a, long long k, long long n){
 
-    long long b = 0;
+    long long b = 1;
     int t = 4;  //using 4 as t for the sake of implementation
 //#1
     if (k == 0) {
-        b=1;
         return b;
     }
 
@@ -218,7 +218,6 @@ void elGamal (int bits, string plainText){
    test = millerRabin(p,4);
   }
 
-    cout <<"test";
 
    //for now i will be providing a generator variable of 2
    //link either crypto ++ or hardcoded function to find generator alpha
@@ -237,10 +236,10 @@ void elGamal (int bits, string plainText){
 
     //1a
     //public keys
-    cout<<"Your public keys are as follows: " << "p: "<< p << " alpha: " <<alpha
-    << " alpha ^a mod p:" <<alphaPowA<<endl;
+    cout<<"Your public keys are as follows: \n" << "p: "<< p << " \nalpha: " <<alpha
+    << " \nalpha ^a mod p:" <<alphaPowA<<endl;
 
-    cout<< "Private key (a): "<< a<<endl;
+    cout<< "\n Private key (a): "<< a<<endl;
 
     //1b
     //represent message "m" as an integer
@@ -248,7 +247,7 @@ void elGamal (int bits, string plainText){
     //create an m variable that will represent the message in an integer in the range of {0,p-1}
 
     long long m = randNumGen(0, p-1);
-    cout<< "Your plaintext " <<plainText<<" , will be represented by this m = "<<m<<endl;
+    cout<< "\nYour plaintext " <<plainText<<", will be represented by this m = "<<m<<endl;
 
 
 
@@ -267,7 +266,7 @@ void elGamal (int bits, string plainText){
 
     //send ciphertext
 
-    cout<<"The ciphertext is: "<<gamma<< " "<<delta;
+    cout<<"\nThe ciphertext is: "<<gamma<< " and "<<delta;
 
   //*****************
  //start decryption
@@ -287,7 +286,7 @@ void elGamal (int bits, string plainText){
     //getting message again
     long long decMessage = (gammaPMinus1A *delta)%p;
 
-    cout<<"Your original message"<<m<<endl;
+    cout<<"\nYour original message: "<<m<<endl;
     cout<<"Decrypted message (original message): "<<decMessage<<endl;
 
 }
@@ -307,6 +306,7 @@ int main()
 
 
     elGamal(keySize,plainText);
+
 
     return 0;
 }
