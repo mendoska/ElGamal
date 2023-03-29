@@ -302,7 +302,7 @@ int main()
     cin >>keySize;
 
     cout << "\nPlease enter your plaintext message: ";
-    cin>>plainText;
+    getline(cin, plainText);
 
 
     elGamal(keySize,plainText);
