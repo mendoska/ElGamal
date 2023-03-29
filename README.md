@@ -6,6 +6,7 @@ Created with C++
 This program ask for user input of a desired key size, that will be determine how many bits the prime number will be.
 
 *PLEASE NOTE / ISSUES*
+
 I had issues with the implementation of this and I could only get it to work with at max about 20ish bits, it starts to fail around 25 bits.
 
 I think this had to do with my implementation of Miller Rabin.
